@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EC3E02">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Holy Ops">
+<title>Operaciones Holy Kebabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens de marca (brandbook Holy Kebabs, Matters 03/07/2025) ===== */
+:root{
+  --crema:#F9EFD4; --hueso:#F7F5F0; --naranja:#EC3E02; --tierra:#A0483F; --vino:#7A0412;
+  --dorado:#D1A659; --cafe:#562A28; --negro:#191918;
+  --linea:rgba(86,42,40,.18); --suave:rgba(25,25,24,.10);
+  --display:'Unbounded',system-ui,sans-serif;                /* sustituto de Lulo Clean One Bold */
+  --texto:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif; /* sustituto de Neue Montreal */
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--crema);color-scheme:light}
+body{margin:0;background:var(--crema);color:var(--negro);font:16px/1.45 var(--texto);min-height:100vh;min-height:100dvh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0}
+p{margin:0 0 12px}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--dorado);outline-offset:2px}
+.wrap{width:100%;max-width:560px;margin:0 auto;padding-left:16px;padding-right:16px}
+.camello{display:block}
+.oculto{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+
+/* ===== Login ===== */
+.login{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.portada{position:relative;background:var(--naranja);color:var(--negro);padding:calc(26px + var(--sat)) 0 34px}
+.portada .camello{width:58px;height:58px;--camel-bg:var(--naranja)}
+.holy{display:block;font:900 clamp(66px,23vw,116px)/.88 var(--display);letter-spacing:-.025em;margin-top:22px}
+.kebabs{display:block;font:700 clamp(17px,6vw,28px)/1 var(--display);letter-spacing:.34em;margin:12px 0 0 5px}
+.sticker{display:inline-block;padding:11px 16px;border:2.5px solid var(--naranja);border-radius:999px;background:var(--crema);color:var(--naranja);font:700 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;transform:rotate(-7deg)}
+.portada .sticker{position:absolute;right:max(20px,calc((100% - 560px)/2 + 20px));bottom:-21px;z-index:1}
+.tarjeta-login{flex:1;padding:48px 0 calc(28px + var(--sab))}
+.tarjeta-login h1{font-size:22px;margin-bottom:18px}
+.campo{display:block;margin:0 0 14px}
+.campo>span{display:block;font-weight:600;font-size:14px;color:var(--cafe);margin-bottom:6px}
+.campo input,.campo select,.campo textarea{width:100%;padding:13px 14px;border:2px solid var(--negro);border-radius:10px;background:var(--hueso);font-size:16px;outline:none}
+.campo textarea{resize:vertical;line-height:1.5}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--naranja);box-shadow:0 0 0 3px rgba(236,62,2,.22)}
+.campo-check{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.campo-check input{width:22px;height:22px;margin:0;accent-color:var(--naranja)}
+.campo-check>span{display:inline;margin:0;color:var(--negro);font-weight:600}
+.msg{min-height:20px;margin:0 0 10px;font-size:14px;font-weight:600;color:var(--vino)}
+.msg.ok{color:var(--cafe)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:50px;padding:12px 18px;border:2px solid var(--negro);border-radius:12px;background:var(--hueso);font-weight:700}
+.btn.primario{background:var(--naranja);border-color:var(--naranja)}
+.btn:disabled{opacity:.55;cursor:default}
+.enlace{display:block;background:none;border:0;padding:14px 0 0;color:var(--cafe);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.aviso{background:var(--hueso);border:2px solid var(--dorado);border-radius:14px;padding:14px 16px;margin-bottom:20px;font-size:15px}
+.aviso ol{margin:8px 0 0;padding-left:20px}
+.aviso li{margin-bottom:5px}
+.aviso .btn{margin-top:12px}
+details.aviso summary{cursor:pointer}
+details.aviso summary strong{font-weight:700}
+.local{margin-bottom:20px;padding:14px 16px;border:2px solid var(--negro);border-radius:14px;background:var(--hueso)}
+.local p{margin:4px 0 12px;font-size:14px;color:var(--cafe)}
+.local .fila-botones .btn{flex:1 1 30%;padding:10px 8px;font-size:14px}
+.banda{background:var(--dorado);color:var(--negro);font-size:13px;font-weight:600}
+.banda .fila{min-height:36px;justify-content:space-between}
+.banda .enlace{display:inline;padding:0;color:inherit}
+.centro{min-height:100vh;min-height:100dvh;display:grid;place-content:center;gap:12px;padding:24px;text-align:center;color:var(--cafe)}
+.centro .marca-mini{justify-content:center}
+.centro .camello{--camel-bg:var(--crema)}
+.centro h1{color:var(--negro);font-size:20px}
+.centro p{max-width:34ch}
+.centro .btn{width:auto;justify-self:center}
+
+/* ===== App ===== */
+.barra{position:sticky;top:0;z-index:5;background:var(--naranja);color:var(--negro);padding-top:var(--sat)}
+.fila{display:flex;align-items:center;gap:12px}
+.barra .fila{min-height:60px}
+.marca-mini{display:flex;align-items:center;gap:8px;font:900 15px/1 var(--display);letter-spacing:.02em}
+.marca-mini .camello{width:30px;height:30px;--camel-bg:var(--naranja)}
+.quien{margin-left:auto;text-align:right;line-height:1.15;min-width:0}
+.quien span{display:block;font-weight:700;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quien small{display:block;font-size:12px;color:rgba(25,25,24,.72)}
+.btn-salir{border:2px solid var(--negro);background:transparent;border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px}
+main{padding-top:16px;padding-bottom:calc(88px + var(--sab))}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--hueso);border-top:2px solid var(--negro);padding-bottom:var(--sab)}
+.tabs .fila{gap:0;align-items:stretch}
+.tabs button{flex:1;background:none;border:0;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--cafe)}
+.tabs button.activa{color:var(--naranja)}
+.tabs svg{width:24px;height:24px}
+.titulo{font-size:22px;font-weight:800;margin:4px 0 12px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:2px solid var(--negro);border-radius:999px;padding:8px 14px;background:transparent;font-weight:700;font-size:14px;white-space:nowrap}
+.chip.activa{background:var(--negro);color:var(--crema)}
+.fecha-linea{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 14px}
+.fecha-linea strong{font-weight:600;color:var(--cafe)}
+.fecha-linea input{padding:8px 10px;border:2px solid var(--negro);border-radius:10px;background:var(--hueso);font-size:15px}
+.vacio{background:var(--hueso);border:2px dashed var(--linea);border-radius:14px;padding:22px 18px;text-align:center;color:var(--cafe)}
+.turno{display:flex;align-items:center;gap:14px;width:100%;margin-bottom:10px;padding:14px;border:2px solid var(--linea);border-radius:14px;background:var(--hueso);color:inherit;text-align:left}
+.turno.completa{border-color:var(--naranja)}
+.turno .info{flex:1;min-width:0}
+.turno .info strong{display:block;font-size:16px;line-height:1.25}
+.turno .info small{display:block;margin-top:3px;font-size:13px;color:var(--cafe)}
+.flecha{width:22px;height:22px;flex:0 0 22px;color:var(--cafe)}
+.anillo{position:relative;width:54px;height:54px;flex:0 0 54px;border-radius:50%;background:conic-gradient(var(--naranja) calc(var(--p,0)*1%),var(--suave) 0)}
+.anillo::after{content:'';position:absolute;inset:7px;border-radius:50%;background:var(--hueso)}
+.anillo b{position:absolute;inset:0;z-index:1;display:grid;place-items:center;font:800 12px var(--display)}
+.etq{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;line-height:1.5;vertical-align:1px}
+.etq-apertura{background:var(--dorado);color:var(--negro)}
+.etq-medio{background:var(--naranja);color:var(--negro)}
+.etq-cierre{background:var(--vino);color:var(--crema)}
+.etq-limpieza{background:var(--tierra);color:var(--crema)}
+.etq-inventario{background:var(--cafe);color:var(--crema)}
+.etq-otro{background:var(--suave);color:var(--negro)}
+
+/* Detalle de checklist */
+.cabecera{margin:-16px -16px 0;padding:12px 16px 18px;background:var(--vino);color:var(--crema)}
+.cabecera .volver{display:inline-flex;align-items:center;gap:6px;padding:8px 0;background:none;border:0;color:inherit;font-weight:700}
+.cabecera .volver svg{width:20px;height:20px}
+.cabecera h2{font-size:22px;font-weight:800;margin:8px 0 2px}
+.cabecera .sub{font-size:14px;opacity:.85}
+.cabecera .cifra{margin-top:14px;font:900 40px/1 var(--display)}
+.cabecera .cifra small{margin-left:8px;font:600 14px var(--texto);opacity:.85}
+.barra-prog{height:10px;margin-top:10px;border-radius:999px;background:rgba(249,239,212,.25);overflow:hidden}
+.barra-prog i{display:block;height:100%;background:var(--dorado)}
+.nota{margin:12px 0 0;font-size:14px;color:var(--cafe)}
+.tareas{margin-top:6px}
+.tarea{position:relative;display:flex;gap:14px;align-items:flex-start;padding:15px 2px;border-bottom:1px solid var(--linea);cursor:pointer}
+.tarea:has(input:disabled){cursor:default}
+.caja{position:relative;width:30px;height:30px;flex:0 0 30px;margin-top:1px;border:2.5px solid var(--negro);border-radius:8px;background:var(--hueso)}
+.oculto:checked+.caja{background:var(--naranja);border-color:var(--naranja)}
+.oculto:checked+.caja::after{content:'';position:absolute;left:9px;top:3px;width:8px;height:15px;border:solid var(--negro);border-width:0 3.5px 3.5px 0;transform:rotate(42deg)}
+.oculto:focus-visible+.caja{outline:3px solid var(--dorado);outline-offset:2px}
+.oculto:disabled+.caja{opacity:.5}
+.tarea .txt{flex:1;padding-top:4px;line-height:1.35}
+.tarea.hecha .txt{color:var(--cafe)}
+.tarea .txt small{display:block;margin-top:3px;font-size:13px;font-weight:600;color:var(--tierra)}
+.listo{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--vino);color:var(--crema);font-weight:700;text-align:center}
+
+/* Reportes y admin */
+.resumen{margin-bottom:12px;padding:16px;border:2px solid var(--linea);border-radius:14px;background:var(--hueso)}
+.resumen b{display:block;margin:6px 0;font:900 44px/1 var(--display);color:var(--naranja)}
+.resumen small{color:var(--cafe)}
+.seccion{margin:0 0 26px}
+.seccion h2{font-size:17px;font-weight:800;margin:0 0 10px}
+.lista{border:2px solid var(--linea);border-radius:14px;background:var(--hueso);overflow:hidden}
+.item{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:0;border-bottom:1px solid var(--linea);background:none;color:inherit;text-align:left}
+.item:last-child{border-bottom:0}
+.item>div{flex:1;min-width:0}
+.item strong{display:block}
+.item small{display:block;color:var(--cafe);font-size:13px;margin-top:2px}
+.item .flecha{width:20px;height:20px;flex:0 0 20px}
+.editor{margin-top:12px;padding:16px;border:2px solid var(--negro);border-radius:14px;background:var(--hueso)}
+.editor h3{font-size:16px;margin-bottom:12px}
+.fila-botones{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.fila-botones .btn{width:auto;flex:1}
+.opciones{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.opciones label{position:relative;display:inline-flex;align-items:center;padding:7px 13px;border:2px solid var(--linea);border-radius:999px;background:var(--crema);font-size:14px;font-weight:600;cursor:pointer}
+.opciones label:has(:checked){border-color:var(--negro);background:var(--negro);color:var(--crema)}
+.opciones label:has(:focus-visible){outline:3px solid var(--dorado);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(84px + var(--sab));z-index:9;transform:translateX(-50%);max-width:calc(100% - 32px);padding:10px 16px;border-radius:999px;background:var(--negro);color:var(--crema);font-size:14px;font-weight:600;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.ver{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>Esta app necesita JavaScript.</noscript>
+
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-database-compat.js"></script>
+<script>
+/* =========================================================
+   1. CONFIGURACIÓN DE FIREBASE
+   Pega aquí el objeto firebaseConfig de tu proyecto:
+   Consola de Firebase > Configuración del proyecto > Tus apps > Web.
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "PEGA_AQUI",
+  authDomain: "PEGA_AQUI.firebaseapp.com",
+  databaseURL: "https://PEGA_AQUI-default-rtdb.firebaseio.com",
+  projectId: "PEGA_AQUI",
+  appId: "PEGA_AQUI"
+};
+const CONFIGURADO = !JSON.stringify(firebaseConfig).includes("PEGA_AQUI");
+const HAY_SDK = typeof firebase !== "undefined";
+// Modo local: sin Firebase, con datos de ejemplo guardados en este navegador (para probar o demostrar).
+let MODO_LOCAL = false;
+let MARCA_TIEMPO = null; // valor "hora del servidor" según el modo
+
+/* ===== 2. Catálogos fijos ===== */
+const ROLES = { admin: "Administrador", encargado: "Encargado de sucursal", colaborador: "Colaborador" };
+const TIPOS = { restaurante: "Restaurante", isla: "Isla", foodtruck: "Foodtruck", cedis: "CEDIS" };
+const TURNOS = { apertura: "Apertura", medio: "Medio turno", cierre: "Cierre", limpieza: "Limpieza", inventario: "Inventario", otro: "Otro" };
+const ORDEN_TURNOS = Object.keys(TURNOS);
+
+/* ===== 3. Estado de la app ===== */
+const S = {
+  cargando: CONFIGURADO && HAY_SDK,
+  user: null, perfil: null, sinAcceso: false,
+  sucursales: {}, plantillas: {},
+  suc: null, fecha: hoyISO(), fechaManual: false, dia: {},
+  vista: "checklists", abierta: null, editando: null
+};
+let auth = null, db = null;
+const subs = {};
+
+/* ===== 4. Marca e íconos ===== */
+// Aproximación en SVG del camello del logo. Sustituir por el SVG oficial cuando esté disponible.
+const CAMELLO = `<svg class="camello" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 114V62a38 38 0 0 1 76 0v52H60V62a14 14 0 0 0-28 0v52Z"/><path fill="none" stroke="currentColor" stroke-width="22" d="M72 70V46a22 22 0 0 1 22-22h4"/><rect fill="currentColor" x="92" y="10" width="26" height="28" rx="5"/><rect fill="currentColor" x="97" y="2" width="8" height="12" rx="2"/><circle fill="var(--camel-bg,transparent)" cx="111" cy="19" r="3"/></svg>`;
+const ICO = {
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 3 3 5-6"/></svg>`,
+  barras: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="11" width="4" height="9" rx="1"/><rect x="10" y="5" width="4" height="15" rx="1"/><rect x="16" y="8" width="4" height="12" rx="1"/></svg>`,
+  ajustes: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/></svg>`,
+  flecha: `<svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>`,
+  atras: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>`
+};
+
+/* ===== 5. Utilidades ===== */
+const $ = (sel) => document.querySelector(sel);
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c])); }
+function hoyISO(d = new Date()){ const p = n => String(n).padStart(2, "0"); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+function fechaLarga(iso){
+  const [y, m, d] = iso.split("-").map(Number);
+  const t = new Date(y, m - 1, d).toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function hora(ts){ if(!ts) return ""; const d = new Date(ts); return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`; }
+function leerLocal(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function guardarLocal(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+function esAdmin(){ return S.perfil?.rol === "admin"; }
+function esEncargado(){ return S.perfil?.rol === "encargado"; }
+function ordenar(obj){
+  return Object.entries(obj || {}).sort((a, b) =>
+    ((a[1].orden ?? 99) - (b[1].orden ?? 99)) || String(a[1].nombre || "").localeCompare(String(b[1].nombre || ""), "es"));
+}
+function misSucursales(){
+  const todas = ordenar(S.sucursales).filter(([, s]) => s.activa !== false).map(([id]) => id);
+  if(esAdmin()) return todas;
+  const asig = S.perfil?.sucursales || {};
+  return todas.filter(id => asig[id] === true);
+}
+function tareasDe(p){ const t = p?.tareas; if(!t) return []; return Array.isArray(t) ? t.filter(Boolean) : Object.values(t); }
+function plantillasDe(sucId){
+  return ordenar(S.plantillas)
+    .filter(([, p]) => p.activa !== false && (p.sucursales === "todas" || (p.sucursales && p.sucursales[sucId] === true)))
+    .map(([id, p]) => ({ id, ...p }))
+    .sort((a, b) => (ORDEN_TURNOS.indexOf(a.turno) - ORDEN_TURNOS.indexOf(b.turno)) || ((a.orden ?? 99) - (b.orden ?? 99)));
+}
+function progreso(pId){
+  const tareas = tareasDe(S.plantillas[pId]);
+  const hechas = S.dia?.[pId]?.tareas || {};
+  const n = tareas.filter(t => hechas[t.id]).length, total = tareas.length;
+  return { n, total, pct: total ? Math.round(n * 100 / total) : 0 };
+}
+function ultimaMarca(pId){
+  const t = Object.values(S.dia?.[pId]?.tareas || {});
+  return t.length ? t.reduce((a, b) => (b.hora || 0) > (a.hora || 0) ? b : a) : null;
+}
+function slug(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+function toast(msg){
+  let t = $("#toast");
+  if(!t){ t = document.createElement("div"); t.id = "toast"; t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("ver");
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove("ver"), 2600);
+}
+function errorAuth(err){
+  const c = err?.code || "";
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c)) return "Correo o contraseña incorrectos.";
+  if(c.includes("invalid-email")) return "El correo no es válido.";
+  if(c.includes("too-many-requests")) return "Demasiados intentos. Espera unos minutos.";
+  if(c.includes("network")) return "Sin conexión. Revisa tu internet.";
+  if(c.includes("user-disabled")) return "Esta cuenta está deshabilitada.";
+  return "No se pudo completar (" + (c || "error") + ").";
+}
+function setMsg(m, ok){ const el = $("#loginMsg"); if(!el) return; el.textContent = m; el.classList.toggle("ok", !!ok); }
+
+/* ===== 6. Firebase: sesión y suscripciones ===== */
+function iniciar(){
+  document.addEventListener("click", alClick);
+  document.addEventListener("change", alCambiar);
+  document.addEventListener("submit", alEnviar);
+  document.addEventListener("visibilitychange", () => {
+    // Si la app quedó abierta y cambió el día, pasa al día de hoy.
+    if(document.visibilityState === "visible" && S.user && S.perfil && !S.fechaManual && S.fecha !== hoyISO()){
+      S.fecha = hoyISO(); suscribirDia(); renderVista();
+    }
+  });
+  const forzarLocal = /[?&]local=1/.test(location.search);
+  if(CONFIGURADO && HAY_SDK && !forzarLocal){
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.database();
+    MARCA_TIEMPO = firebase.database.ServerValue.TIMESTAMP;
+    auth.onAuthStateChanged(alCambiarSesion);
+    return;
+  }
+  // Sin Firebase: si había una sesión local, se retoma; si no, se muestra el login con el modo local.
+  if(forzarLocal || leerLocal("hk_local_uid")) activarLocal(); else render();
+}
+
+function alCambiarSesion(user){
+  limpiarSubs();
+  Object.assign(S, { user, perfil: null, sinAcceso: false, sucursales: {}, plantillas: {}, suc: null, dia: {},
+    vista: "checklists", abierta: null, editando: null, fecha: hoyISO(), fechaManual: false });
+  if(!user){ S.cargando = false; render(); return; }
+  S.cargando = true; render();
+  cargarPerfil(user);
+}
+
+function activarLocal(){
+  if(MODO_LOCAL) return;
+  MODO_LOCAL = true;
+  const fb = crearFirebaseLocal();
+  auth = fb.auth; db = fb.db; MARCA_TIEMPO = fb.TS;
+  S.cargando = true; render();
+  auth.onAuthStateChanged(alCambiarSesion);
+}
+
+async function cargarPerfil(user){
+  const ref = db.ref("usuarios/" + user.uid);
+  try {
+    const snap = await ref.get();
+    if(!snap.exists()){
+      // Primer acceso al sistema: se da de alta como administrador.
+      // Las reglas sólo lo permiten mientras no exista ningún usuario en la base.
+      await ref.set({ nombre: user.email.split("@")[0], correo: user.email, rol: "admin", activo: true,
+        creadoEn: MARCA_TIEMPO });
+    }
+  } catch(e){
+    console.error(e);
+    S.sinAcceso = true; S.cargando = false; render(); return;
+  }
+  subs.perfil = ref;
+  ref.on("value", snap => {
+    if(!snap.exists()){ S.perfil = null; S.sinAcceso = true; S.cargando = false; render(); return; }
+    S.perfil = snap.val();
+    S.sinAcceso = S.perfil.activo === false;
+    S.cargando = false;
+    if(!S.sinAcceso && !subs.sucursales) escucharCatalogos();
+    elegirSucursal();
+    render();
+  }, err => { console.error(err); S.sinAcceso = true; S.cargando = false; render(); });
+}
+
+function escucharCatalogos(){
+  subs.sucursales = db.ref("sucursales");
+  subs.plantillas = db.ref("plantillas");
+  subs.sucursales.on("value", s => { S.sucursales = s.val() || {}; elegirSucursal(); render("catalogo"); });
+  subs.plantillas.on("value", s => { S.plantillas = s.val() || {}; render("catalogo"); });
+}
+
+function elegirSucursal(){
+  const mias = misSucursales();
+  if(!mias.includes(S.suc)){
+    const guardada = leerLocal("hk_sucursal");
+    S.suc = mias.includes(guardada) ? guardada : (mias[0] || null);
+  }
+  suscribirDia();
+}
+
+function suscribirDia(){
+  const clave = S.suc ? `checklists/${S.suc}/${S.fecha}` : null;
+  if(subs.diaClave === clave) return;
+  if(subs.dia) subs.dia.off();
+  subs.diaClave = clave; subs.dia = null; S.dia = {};
+  if(!clave) return;
+  subs.dia = db.ref(clave);
+  subs.dia.on("value", s => { S.dia = s.val() || {}; render("dia"); },
+    err => { console.error(err); S.dia = {}; toast("No tienes permiso para ver esta sucursal."); });
+}
+
+function limpiarSubs(){
+  for(const k of ["perfil", "sucursales", "plantillas", "dia"]){ if(subs[k]) subs[k].off(); subs[k] = null; }
+  subs.diaClave = undefined;
+}
+
+/* ===== 7. Acciones ===== */
+async function marcar(pId, tId, hecho){
+  if(!S.suc || !S.user) return;
+  const ref = db.ref(`checklists/${S.suc}/${S.fecha}/${pId}/tareas/${tId}`);
+  try {
+    if(hecho) await ref.set({ por: S.user.uid, nombre: S.perfil.nombre || S.user.email, hora: MARCA_TIEMPO });
+    else await ref.remove();
+  } catch(e){ console.error(e); toast("No se pudo guardar. Revisa tu conexión o tus permisos."); renderVista(); }
+}
+
+async function recuperarPass(){
+  if(MODO_LOCAL){ setMsg("En modo local no hay correos. Usa los botones de arriba."); return; }
+  if(!auth){ setMsg("Primero conecta Firebase o usa el modo local."); return; }
+  const correo = ($("#correo")?.value || "").trim();
+  if(!correo){ setMsg("Escribe tu correo arriba y vuelve a tocar \"Olvidé mi contraseña\"."); return; }
+  try { await auth.sendPasswordResetEmail(correo); setMsg("Te enviamos un correo para cambiar tu contraseña.", true); }
+  catch(err){ setMsg(errorAuth(err)); }
+}
+
+async function agregarSucursal(){
+  const nombre = $("#sNombre").value.trim(), tipo = $("#sTipo").value;
+  if(!nombre){ toast("Escribe el nombre de la sucursal."); return; }
+  let id = slug(nombre) || "sucursal"; const base = id; let n = 2;
+  while(S.sucursales[id]) id = base + "-" + (n++);
+  try {
+    await db.ref("sucursales/" + id).set({ nombre, tipo, activa: true, orden: Object.keys(S.sucursales).length + 1 });
+    toast("Sucursal agregada.");
+  } catch(e){ console.error(e); toast("No se pudo guardar. ¿Pegaste las reglas y eres administrador?"); }
+}
+
+async function guardarPlantilla(){
+  const nombre = $("#pNombre").value.trim(), turno = $("#pTurno").value, todas = $("#pTodas").checked;
+  const elegidas = {}; document.querySelectorAll("[data-suc]:checked").forEach(c => { elegidas[c.value] = true; });
+  const lineas = $("#pTareas").value.split("\n").map(x => x.trim()).filter(Boolean);
+  if(!nombre){ toast("Ponle nombre a la checklist."); return; }
+  if(!lineas.length){ toast("Escribe al menos una tarea, una por línea."); return; }
+  if(!todas && !Object.keys(elegidas).length){ toast("Elige al menos una sucursal."); return; }
+  const nueva = S.editando === "nueva";
+  const previas = nueva ? [] : tareasDe(S.plantillas[S.editando]);
+  const usados = new Set();
+  // Conserva el id de las tareas cuyo texto no cambió, para no romper el historial.
+  const tareas = lineas.map((texto, i) => {
+    const ant = previas.find(t => t.texto === texto && !usados.has(t.id));
+    const id = ant ? ant.id : "t" + Date.now().toString(36) + i;
+    usados.add(id);
+    return { id, texto };
+  });
+  const id = nueva ? db.ref("plantillas").push().key : S.editando;
+  const datos = { nombre, turno, sucursales: todas ? "todas" : elegidas, tareas };
+  if(nueva){ datos.activa = true; datos.orden = Object.keys(S.plantillas).length + 1; datos.creadoEn = MARCA_TIEMPO; }
+  try {
+    await db.ref("plantillas/" + id).update(datos);
+    S.editando = null; toast(nueva ? "Checklist creada." : "Cambios guardados."); render();
+  } catch(e){ console.error(e); toast("No se pudo guardar."); }
+}
+
+async function alternarPlantilla(d){
+  const activar = !d.activa;
+  if(!activar && !confirm("¿Desactivar esta checklist? Deja de aparecer en las sucursales, pero su historial se conserva.")) return;
+  try {
+    await db.ref("plantillas/" + d.id + "/activa").set(activar);
+    S.editando = null; toast(activar ? "Checklist activada." : "Checklist desactivada."); render();
+  } catch(e){ console.error(e); toast("No se pudo cambiar."); }
+}
+
+// Datos de ejemplo (placeholders: Diego aporta las tareas reales). completo=true agrega sucursales demo para el modo local.
+function datosEjemplo(completo){
+  const t = (...xs) => xs.map((texto, i) => ({ id: "t" + (i + 1), texto }));
+  const sucursales = {
+    zibata: { nombre: "Zibatá", tipo: "restaurante", activa: true, orden: 1 },
+    cedis: { nombre: "CEDIS", tipo: "cedis", activa: true, orden: 99 }
+  };
+  const plantillas = {
+    apertura: { nombre: "Apertura", turno: "apertura", sucursales: "todas", activa: true, orden: 1,
+      tareas: t("Encender equipos y revisar temperaturas de refrigeración", "Revisar existencias de proteína, pan y salsas",
+        "Montar la estación de armado", "Limpiar barra y área de clientes", "Contar fondo de caja") },
+    cierre: { nombre: "Cierre", turno: "cierre", sucursales: "todas", activa: true, orden: 2,
+      tareas: t("Apagar y limpiar plancha y trompo", "Guardar y etiquetar producto sobrante", "Hacer corte de caja",
+        "Sacar basura y limpiar pisos", "Cerrar gas, luces y llaves de agua") }
+  };
+  if(completo){
+    sucursales["plaza-demo"] = { nombre: "Plaza demo", tipo: "isla", activa: true, orden: 2 };
+    sucursales["foodtruck-demo"] = { nombre: "Foodtruck demo", tipo: "foodtruck", activa: true, orden: 3 };
+    plantillas.inventario = { nombre: "Inventario de cierre", turno: "inventario", sucursales: { zibata: true, "plaza-demo": true }, activa: true, orden: 3,
+      tareas: t("Contar proteína en refrigeración", "Contar pan y tortillas", "Contar salsas y aderezos", "Registrar mermas del día") };
+  }
+  return { sucursales, plantillas };
+}
+
+async function cargarEjemplo(){
+  try { await db.ref().update(datosEjemplo(false)); toast("Datos de ejemplo cargados."); }
+  catch(e){ console.error(e); toast("No se pudo cargar. ¿Pegaste las reglas y eres administrador?"); }
+}
+
+function reiniciarLocal(){
+  if(!confirm("¿Borrar los datos locales y volver a los de ejemplo?")) return;
+  try { localStorage.removeItem("hk_local_db"); localStorage.removeItem("hk_local_uid"); } catch(e){}
+  location.reload();
+}
+
+/* ===== Modo local: imita la parte de Firebase que usa la app, guardando en este navegador ===== */
+function crearFirebaseLocal(){
+  const CLAVE_DB = "hk_local_db", CLAVE_UID = "hk_local_uid", TS = "__marca_tiempo__";
+  const leerJSON = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
+  let arbol = leerJSON(CLAVE_DB);
+  if(!arbol || !arbol.usuarios){
+    arbol = Object.assign({
+      usuarios: {
+        "local-admin": { nombre: "Diego", correo: "admin@local", rol: "admin", activo: true },
+        "local-encargado": { nombre: "Encargado demo", correo: "encargado@local", rol: "encargado", activo: true, sucursales: { zibata: true, "plaza-demo": true } },
+        "local-colaborador": { nombre: "Colaborador demo", correo: "colaborador@local", rol: "colaborador", activo: true, sucursales: { zibata: true } }
+      }
+    }, datosEjemplo(true));
+  }
+  const oyentes = new Map(); let nOyente = 0;
+  const partes = r => String(r || "").split("/").filter(Boolean);
+  const clonar = v => v == null ? null : JSON.parse(JSON.stringify(v));
+  // Como Firebase: resuelve la marca de tiempo y elimina nulos y objetos vacíos.
+  function limpiar(v){
+    if(v === TS) return Date.now();
+    if(Array.isArray(v)){ const a = v.map(limpiar).filter(x => x != null); return a.length ? a : null; }
+    if(v && typeof v === "object"){ const o = {}; for(const [k, x] of Object.entries(v)){ const y = limpiar(x); if(y != null) o[k] = y; } return Object.keys(o).length ? o : null; }
+    return v == null ? null : v;
+  }
+  function obtener(ruta){ let n = arbol; for(const p of partes(ruta)){ if(n == null || typeof n !== "object") return null; n = n[p]; } return n == null ? null : n; }
+  function escribir(ruta, valor){
+    const ps = partes(ruta), v = limpiar(valor);
+    if(!ps.length){ arbol = v || {}; }
+    else {
+      let n = arbol;
+      for(const p of ps.slice(0, -1)){ if(n[p] == null || typeof n[p] !== "object") n[p] = {}; n = n[p]; }
+      const ultimo = ps[ps.length - 1];
+      if(v === null) delete n[ultimo]; else n[ultimo] = v;
+    }
+    arbol = limpiar(arbol) || {};
+  }
+  function snap(ruta){ const v = clonar(obtener(ruta)); return { exists: () => v !== null, val: () => v }; }
+  function notificar(){
+    try { localStorage.setItem(CLAVE_DB, JSON.stringify(arbol)); } catch(e){}
+    for(const o of oyentes.values()) o.cb(snap(o.ruta));
+  }
+  function ref(ruta = ""){
+    const ids = [];
+    return {
+      key: partes(ruta).pop() || null,
+      get: async () => snap(ruta),
+      set: async v => { escribir(ruta, v); notificar(); },
+      update: async obj => { for(const [k, v] of Object.entries(obj)) escribir(ruta ? ruta + "/" + k : k, v); notificar(); },
+      remove: async () => { escribir(ruta, null); notificar(); },
+      push: () => ref(ruta + "/l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)),
+      on(ev, cb){ const id = ++nOyente; oyentes.set(id, { ruta, cb }); ids.push(id); setTimeout(() => { if(oyentes.has(id)) cb(snap(ruta)); }, 0); return cb; },
+      off(){ ids.forEach(id => oyentes.delete(id)); ids.length = 0; }
+    };
+  }
+  notificar();
+  let usuarioActual = null; const cbs = [];
+  const uidGuardado = leerLocal(CLAVE_UID);
+  if(uidGuardado && arbol.usuarios[uidGuardado]) usuarioActual = { uid: uidGuardado, email: arbol.usuarios[uidGuardado].correo };
+  const avisar = () => cbs.forEach(r => { r.inicial = false; r.cb(usuarioActual); });
+  const entrar = (uid) => { const u = arbol.usuarios[uid]; if(!u) return false; usuarioActual = { uid, email: u.correo }; guardarLocal(CLAVE_UID, uid); avisar(); return true; };
+  const auth = {
+    onAuthStateChanged(cb){ const r = { cb, inicial: true }; cbs.push(r); setTimeout(() => { if(r.inicial){ r.inicial = false; cb(usuarioActual); } }, 0); },
+    entrarComo(rol){ entrar("local-" + rol); },
+    async signInWithEmailAndPassword(correo){
+      const ent = Object.entries(arbol.usuarios).find(([, u]) => u.correo === correo);
+      if(!ent) throw { code: "auth/invalid-credential" };
+      entrar(ent[0]);
+    },
+    async signOut(){ usuarioActual = null; try { localStorage.removeItem(CLAVE_UID); } catch(e){} avisar(); },
+    async sendPasswordResetEmail(){ throw { code: "auth/local" }; }
+  };
+  return { auth, db: { ref }, TS };
+}
+
+const acciones = {
+  ir(d){ S.vista = d.vista; S.abierta = null; S.editando = null; render(); window.scrollTo(0, 0); },
+  abrir(d){ S.abierta = d.id; S.vista = "checklist"; render(); window.scrollTo(0, 0); },
+  volver(){ S.abierta = null; S.vista = "checklists"; render(); },
+  suc(d){ S.suc = d.id; guardarLocal("hk_sucursal", d.id); suscribirDia(); renderVista(); },
+  salir(){ if(auth) auth.signOut(); },
+  editar(d){ S.editando = d.id; render(); },
+  cancelar(){ S.editando = null; render(); },
+  recuperar: recuperarPass,
+  ejemplo: cargarEjemplo,
+  local(d){ activarLocal(); auth.entrarComo(d.rol); },
+  reiniciarLocal,
+  agregarSucursal, guardarPlantilla, alternarPlantilla
+};
+function alClick(e){
+  const el = e.target.closest("[data-a]"); if(!el) return;
+  const fn = acciones[el.dataset.a];
+  if(fn) fn(el.dataset, el);
+}
+function alCambiar(e){
+  const t = e.target;
+  if(t.dataset.a === "tarea"){ marcar(t.dataset.p, t.dataset.t, t.checked); return; }
+  if(t.id === "fecha"){ S.fecha = t.value || hoyISO(); S.fechaManual = S.fecha !== hoyISO(); suscribirDia(); renderVista(); return; }
+  if(t.id === "pTodas"){ const c = $("#elegirSucs"); if(c) c.hidden = t.checked; }
+}
+async function alEnviar(e){
+  if(e.target.id !== "fLogin") return;
+  e.preventDefault();
+  if(!auth){ setMsg(CONFIGURADO ? "No se pudo cargar Firebase. Revisa tu conexión o usa el modo local." : "Primero conecta Firebase o entra en modo local."); return; }
+  const f = e.target, btn = f.querySelector("button[type=submit]");
+  btn.disabled = true; btn.textContent = "Entrando…"; setMsg("");
+  try { await auth.signInWithEmailAndPassword(f.correo.value.trim(), f.pass.value); }
+  catch(err){ setMsg(errorAuth(err)); btn.disabled = false; btn.textContent = "Entrar"; }
+}
+
+/* ===== 8. Vistas ===== */
+function render(origen){
+  if(origen === "dia"){ if(["checklists", "checklist", "reportes"].includes(S.vista)) renderVista(); return; }
+  if(origen === "catalogo"){
+    if(S.vista === "admin" && S.editando) return; // no pisar lo que el admin está escribiendo
+    if(S.vista === "checklist" && !S.plantillas[S.abierta]){ S.vista = "checklists"; S.abierta = null; }
+  }
+  const app = $("#app");
+  if(!MODO_LOCAL && (!CONFIGURADO || !HAY_SDK)){ app.innerHTML = vistaLogin(); return; }
+  if(S.cargando){ app.innerHTML = vistaCargando(); return; }
+  if(!S.user){ app.innerHTML = vistaLogin(); return; }
+  if(S.sinAcceso || !S.perfil){ app.innerHTML = vistaSinAcceso(); return; }
+  app.innerHTML = vistaShell();
+}
+function renderVista(){ const m = $("#vista"); if(m) m.innerHTML = vistaActual(); }
+function vistaActual(){
+  switch(S.vista){
+    case "checklist": return vistaChecklist();
+    case "reportes": return vistaReportes();
+    case "admin": return esAdmin() ? vistaAdmin() : vistaChecklists();
+    default: return vistaChecklists();
+  }
+}
+
+function vistaCargando(){
+  return `<div class="centro"><div class="marca-mini">${CAMELLO}<span>HOLY KEBABS</span></div><p>Cargando…</p></div>`;
+}
+
+function vistaLogin(){
+  const sinFirebase = !CONFIGURADO || !HAY_SDK || MODO_LOCAL;
+  const bloqueLocal = sinFirebase ? `<div class="local">
+      <strong>Prueba en modo local</strong>
+      <p>Datos de ejemplo guardados solo en este navegador, sin Firebase. Entra como:</p>
+      <div class="fila-botones">
+        <button class="btn primario" data-a="local" data-rol="admin">Administrador</button>
+        <button class="btn" data-a="local" data-rol="encargado">Encargado</button>
+        <button class="btn" data-a="local" data-rol="colaborador">Colaborador</button>
+      </div></div>` : "";
+  const aviso = CONFIGURADO && !HAY_SDK
+    ? `<div class="aviso"><strong>No se pudo cargar Firebase.</strong> Revisa tu conexión a internet y vuelve a abrir la app.</div>`
+    : !CONFIGURADO ? `<details class="aviso"><summary><strong>Falta conectar Firebase.</strong> Ver los pasos</summary>
+      <ol><li>En console.firebase.google.com crea un proyecto.</li>
+      <li>Activa <b>Authentication</b> con correo y contraseña y agrega tu usuario.</li>
+      <li>Crea la <b>Realtime Database</b> y pega las reglas del archivo <b>database.rules.json</b>.</li>
+      <li>Copia el objeto <b>firebaseConfig</b> de tu proyecto y pégalo al inicio del script de este archivo.</li></ol>
+      El primer usuario que entre queda registrado como administrador.</details>` : "";
+  return `
+  <div class="login">
+    <section class="portada">
+      <div class="wrap">
+        ${CAMELLO}
+        <div class="marca" role="img" aria-label="Holy Kebabs"><span class="holy">HOLY</span><span class="kebabs">KEBABS</span></div>
+      </div>
+      <span class="sticker">Operaciones</span>
+    </section>
+    <section class="tarjeta-login"><div class="wrap">
+      ${bloqueLocal}
+      ${aviso}
+      <h1>Inicia sesión</h1>
+      <form id="fLogin">
+        <label class="campo"><span>Correo</span><input id="correo" name="correo" type="email" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+        <label class="campo"><span>Contraseña</span><input name="pass" type="password" autocomplete="current-password" required></label>
+        <p class="msg" id="loginMsg" aria-live="polite"></p>
+        <button class="btn primario" type="submit">Entrar</button>
+      </form>
+      <button class="enlace" type="button" data-a="recuperar">Olvidé mi contraseña</button>
+    </div></section>
+  </div>`;
+}
+
+function vistaSinAcceso(){
+  const inactiva = S.perfil && S.perfil.activo === false;
+  return `<div class="centro">
+    <div class="marca-mini">${CAMELLO}<span>HOLY KEBABS</span></div>
+    <h1>${inactiva ? "Tu cuenta está desactivada" : "Tu cuenta aún no tiene acceso"}</h1>
+    <p>Entraste como <b>${esc(S.user?.email)}</b>. ${inactiva ? "Pide a un administrador que la reactive." : "Pide a un administrador que te registre y te asigne una sucursal."}</p>
+    <button class="btn" data-a="salir">Cerrar sesión</button>
+  </div>`;
+}
+
+function vistaShell(){
+  const p = S.perfil;
+  const tabs = [["checklists", "Checklists", ICO.check], ["reportes", "Reportes", ICO.barras]];
+  if(esAdmin()) tabs.push(["admin", "Admin", ICO.ajustes]);
+  const activa = S.vista === "checklist" ? "checklists" : S.vista;
+  return `
+  <header class="barra"><div class="wrap fila">
+    <div class="marca-mini">${CAMELLO}<span>HOLY KEBABS</span></div>
+    <div class="quien"><span>${esc(p.nombre || S.user.email)}</span><small>${esc(ROLES[p.rol] || p.rol)}</small></div>
+    <button class="btn-salir" data-a="salir">Salir</button>
+  </div></header>
+  ${MODO_LOCAL ? `<div class="banda"><div class="wrap fila"><span>Modo local: los datos viven solo en este navegador.</span><button class="enlace" data-a="reiniciarLocal">Reiniciar</button></div></div>` : ""}
+  <main id="vista" class="wrap">${vistaActual()}</main>
+  <nav class="tabs" aria-label="Secciones"><div class="wrap fila">
+    ${tabs.map(([v, t, i]) => `<button data-a="ir" data-vista="${v}" class="${activa === v ? "activa" : ""}" ${activa === v ? 'aria-current="page"' : ""}>${i}<span>${t}</span></button>`).join("")}
+  </div></nav>`;
+}
+
+function vistaChecklists(){
+  const mias = misSucursales();
+  if(!mias.length){
+    return `<div class="vacio">${esAdmin() ? "Aún no hay sucursales. Créalas en la pestaña Admin." : "Aún no tienes una sucursal asignada. Pide a un administrador que te asigne una."}</div>`;
+  }
+  const suc = S.sucursales[S.suc] || {};
+  const puedeFecha = esAdmin() || esEncargado();
+  const selector = mias.length > 1
+    ? `<div class="chips">${mias.map(id => `<button class="chip ${id === S.suc ? "activa" : ""}" data-a="suc" data-id="${id}" ${id === S.suc ? 'aria-pressed="true"' : ""}>${esc(S.sucursales[id].nombre)}</button>`).join("")}</div>`
+    : `<h1 class="titulo">${esc(suc.nombre || "")}</h1>`;
+  const fecha = `<div class="fecha-linea"><strong>${fechaLarga(S.fecha)}</strong>${puedeFecha ? `<input type="date" id="fecha" value="${S.fecha}" max="${hoyISO()}" aria-label="Cambiar fecha">` : ""}</div>`;
+  const ps = plantillasDe(S.suc);
+  const lista = ps.length ? ps.map(p => {
+    const pr = progreso(p.id);
+    return `<button class="turno ${pr.total && pr.pct === 100 ? "completa" : ""}" data-a="abrir" data-id="${p.id}">
+      <div class="anillo" style="--p:${pr.pct}"><b>${pr.pct}%</b></div>
+      <div class="info"><strong>${esc(p.nombre)}</strong>
+        <small><span class="etq etq-${esc(p.turno)}">${esc(TURNOS[p.turno] || p.turno)}</span> ${pr.n} de ${pr.total} tareas</small>
+        <small>${estadoTexto(p.id, pr)}</small></div>${ICO.flecha}</button>`;
+  }).join("") : `<div class="vacio">Esta sucursal aún no tiene checklists.${esAdmin() ? " Créalas en Admin." : ""}</div>`;
+  return selector + fecha + lista;
+}
+function estadoTexto(pId, pr){
+  if(!pr.total) return "Sin tareas";
+  if(pr.n === 0) return "Sin empezar";
+  const u = ultimaMarca(pId);
+  if(pr.n === pr.total) return "Completada" + (u ? ` a las ${hora(u.hora)}` : "");
+  return "En curso" + (u ? `, última marca de ${esc(u.nombre)} a las ${hora(u.hora)}` : "");
+}
+
+function vistaChecklist(){
+  const p = S.plantillas[S.abierta];
+  if(!p) return `<div class="vacio">Esta checklist ya no está disponible.</div><button class="btn" data-a="volver" style="margin-top:12px">Volver</button>`;
+  const tareas = tareasDe(p), hechas = S.dia?.[S.abierta]?.tareas || {}, pr = progreso(S.abierta);
+  const puedeEditar = S.fecha === hoyISO() || esAdmin() || esEncargado();
+  const suc = S.sucursales[S.suc] || {};
+  const u = ultimaMarca(S.abierta);
+  const filas = tareas.map(t => {
+    const h = hechas[t.id];
+    const puedeQuitar = h && puedeEditar && (esAdmin() || esEncargado() || h.por === S.user.uid);
+    const dis = !puedeEditar || (h && !puedeQuitar);
+    return `<label class="tarea ${h ? "hecha" : ""}">
+      <input type="checkbox" class="oculto" data-a="tarea" data-p="${S.abierta}" data-t="${t.id}" ${h ? "checked" : ""} ${dis ? "disabled" : ""}>
+      <span class="caja" aria-hidden="true"></span>
+      <span class="txt">${esc(t.texto)}${h ? `<small>${esc(h.nombre)}, ${hora(h.hora)}</small>` : ""}</span>
+    </label>`;
+  }).join("");
+  return `<section class="cabecera">
+    <button class="volver" data-a="volver">${ICO.atras} Checklists</button>
+    <h2>${esc(p.nombre)}</h2>
+    <div class="sub">${esc(suc.nombre || "")}, ${fechaLarga(S.fecha)}</div>
+    <div class="cifra">${pr.n}<small>de ${pr.total} tareas</small></div>
+    <div class="barra-prog" role="progressbar" aria-valuenow="${pr.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pr.pct}%"></i></div>
+  </section>
+  ${!puedeEditar ? `<p class="nota">Solo puedes marcar tareas del día de hoy.</p>` : ""}
+  <div class="tareas">${filas || `<div class="vacio">Esta checklist no tiene tareas.</div>`}</div>
+  ${pr.total && pr.pct === 100 ? `<div class="listo">Checklist completada${u ? ` a las ${hora(u.hora)}` : ""}.</div>` : ""}`;
+}
+
+function vistaReportes(){
+  const suc = S.sucursales[S.suc];
+  if(!suc) return `<h1 class="titulo">Reportes</h1><div class="vacio">Sin sucursal que reportar.</div>`;
+  let n = 0, total = 0;
+  plantillasDe(S.suc).forEach(p => { const pr = progreso(p.id); n += pr.n; total += pr.total; });
+  const pct = total ? Math.round(n * 100 / total) : 0;
+  return `<h1 class="titulo">Reportes</h1>
+  <div class="resumen"><span>${esc(suc.nombre)}, ${fechaLarga(S.fecha)}</span><b>${pct}%</b><small>${n} de ${total} tareas del día</small></div>
+  <div class="vacio">En la siguiente entrega: cumplimiento por sucursal (día, semana y mes) y actividad por persona.</div>`;
+}
+
+function vistaAdmin(){
+  const sucs = ordenar(S.sucursales), ps = ordenar(S.plantillas);
+  const vacio = !sucs.length && !ps.length;
+  return `<h1 class="titulo">Admin</h1>
+  ${vacio ? `<div class="aviso"><strong>La base de datos está vacía.</strong> Puedes cargar dos sucursales y dos checklists de ejemplo para probar y luego editarlas.<button class="btn" data-a="ejemplo">Cargar datos de ejemplo</button></div>` : ""}
+  <section class="seccion"><h2>Sucursales</h2>
+    ${sucs.length ? `<div class="lista">${sucs.map(([id, s]) => `<div class="item"><div><strong>${esc(s.nombre)}</strong><small>${esc(TIPOS[s.tipo] || s.tipo || "")}${s.activa === false ? ", inactiva" : ""}</small></div></div>`).join("")}</div>` : ""}
+    <div class="editor">
+      <label class="campo"><span>Nueva sucursal</span><input id="sNombre" placeholder="Nombre"></label>
+      <label class="campo"><span>Tipo</span><select id="sTipo">${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
+      <button class="btn" data-a="agregarSucursal">Agregar sucursal</button>
+    </div>
+  </section>
+  <section class="seccion"><h2>Checklists</h2>
+    ${ps.length ? `<div class="lista">${ps.map(([id, p]) => {
+      const alcance = p.sucursales === "todas" ? "todas las sucursales" : Object.keys(p.sucursales || {}).map(x => S.sucursales[x]?.nombre || x).join(", ");
+      return `<button class="item" data-a="editar" data-id="${id}"><div><strong>${esc(p.nombre)}</strong>
+        <small><span class="etq etq-${esc(p.turno)}">${esc(TURNOS[p.turno] || p.turno)}</span> ${tareasDe(p).length} tareas, ${esc(alcance)}${p.activa === false ? ". Inactiva" : ""}</small></div>${ICO.flecha}</button>`;
+    }).join("")}</div>` : ""}
+    ${S.editando ? editorPlantilla() : `<button class="btn" data-a="editar" data-id="nueva" style="margin-top:12px">Nueva checklist</button>`}
+  </section>
+  <section class="seccion"><h2>Siguiente entrega</h2><div class="vacio">Usuarios y asignación a sucursales, reportes por día, semana y mes.</div></section>`;
+}
+
+function editorPlantilla(){
+  const nueva = S.editando === "nueva";
+  const p = nueva ? { nombre: "", turno: "apertura", sucursales: "todas", tareas: [], activa: true } : (S.plantillas[S.editando] || {});
+  const todas = p.sucursales === "todas" || !p.sucursales;
+  const sucs = ordenar(S.sucursales).filter(([, s]) => s.activa !== false);
+  return `<div class="editor">
+    <h3>${nueva ? "Nueva checklist" : "Editar checklist"}</h3>
+    <label class="campo"><span>Nombre</span><input id="pNombre" value="${esc(p.nombre || "")}" placeholder="Apertura, Cierre, Limpieza profunda…"></label>
+    <label class="campo"><span>Turno o tipo</span><select id="pTurno">${ORDEN_TURNOS.map(k => `<option value="${k}" ${k === p.turno ? "selected" : ""}>${TURNOS[k]}</option>`).join("")}</select></label>
+    <label class="campo-check"><input type="checkbox" id="pTodas" ${todas ? "checked" : ""}><span>Aplica a todas las sucursales</span></label>
+    <div id="elegirSucs" class="opciones" ${todas ? "hidden" : ""}>${sucs.length ? sucs.map(([id, s]) => `<label><input type="checkbox" class="oculto" data-suc value="${id}" ${!todas && p.sucursales[id] === true ? "checked" : ""}><span>${esc(s.nombre)}</span></label>`).join("") : "<small>Primero agrega sucursales.</small>"}</div>
+    <label class="campo"><span>Tareas, una por línea</span><textarea id="pTareas" rows="8" placeholder="Encender la plancha&#10;Revisar temperatura del refrigerador">${esc(tareasDe(p).map(t => t.texto).join("\n"))}</textarea></label>
+    <div class="fila-botones"><button class="btn primario" data-a="guardarPlantilla">Guardar</button><button class="btn" data-a="cancelar">Cancelar</button></div>
+    ${nueva ? "" : `<button class="enlace" data-a="alternarPlantilla" data-id="${S.editando}" data-activa="${p.activa !== false ? "1" : ""}">${p.activa !== false ? "Desactivar esta checklist" : "Reactivar esta checklist"}</button>`}
+  </div>`;
+}
+
+iniciar();
+</script>
+</body>
+</html>
